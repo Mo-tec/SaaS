@@ -1,0 +1,21 @@
+{
+  "name": "MO SaaS",
+  "short_name": "MO SaaS",
+  "description": "Printing POS and business management system",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F5F5F5",
+  "theme_color": "#008000",
+  "categories": ["business", "productivity", "finance"],
+  "icons": [
+    {
+      "src": "icons/mo-saas-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#008000">
+  <meta name="description" content="MO SaaS - Printing POS and business management system">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MO SaaS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/mo-saas-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/mo-saas-icon.svg">
+  <title>MO SaaS - POS & Business Management</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <section id="loginGate" class="login-gate">
+    <div class="login-panel">
+      <div class="brand gate-brand">
+        <div class="brand-icon">POS</div>
+        <div class="brand-info">
+          <div class="brand-name">MO SaaS</div>
+          <div class="brand-sub">Secure Login</div>
+        </div>
+      </div>
+      <h1>Ingia kwenye mfumo</h1>
+      <p id="loginGateSubtitle">Andika jina lako na nywila ili kuendelea.</p>
+      <div id="loginLicenseBanner" class="login-license-banner hidden" role="alert">
+        <span class="login-license-banner-icon" aria-hidden="true">!</span>
+        <div class="login-license-banner-text">
+          <strong id="loginLicenseBannerTitle">Leseni imefika muda</strong>
+          <span id="loginLicenseBannerDesc">Wasiliana na mtoa huduma kupata leseni mpya.</span>
+        </div>
+      </div>
+      <div class="form-group login-form-field">
+        <label for="gateEmployeeInput">Jina / Email / Simu</label>
+        <input id="gateEmployeeInput" class="form-input" type="text" placeholder="Jina, email au simu" autocomplete="username" maxlength="80">
+      </div>
+      <div class="form-group login-form-field">
+        <label for="gateEmployeePin">Nywila</label>
+        <input id="gateEmployeePin" class="form-input" type="password" placeholder="Weka nywila yako" maxlength="20" autocomplete="current-password">
+      </div>
+      <p id="gateLoginError" class="gate-login-error hidden" role="alert"></p>
+      <button id="gateLoginBtn" class="btn btn-primary btn-full" type="button">Login</button>
+      <div class="login-hint" id="loginGateHint">
+        Andika jina lako kama ulivyosajiliwa, kisha weka nywila yako.
+      </div>
+      <p class="auth-switch">
+        Huna akaunti ya Admin?
+        <button type="button" id="showSignupBtn" class="auth-switch-link">Jisajili hapa</button>
+      </p>
+    </div>
+  </section>
+
+  <section id="signupGate" class="signup-gate hidden">
+    <div class="signup-layout">
+      <div class="signup-hero">
+        <div class="signup-hero-badge">MO SaaS</div>
+        <h2>Fungua duka lako kidijitali</h2>
+        <p>Chagua FREE, Plus au Pro — angalia bei na faida za kila mpango.</p>
+        <ul class="signup-benefits">
+          <li><strong>FREE</strong> — Bure, trial siku 14</li>
+          <li><strong>Plus</strong> — TZS 20,000/mwezi</li>
+          <li><strong>Pro</strong> — TZS 30,000/mwezi</li>
+        </ul>
+      </div>
+      <div class="signup-panel">
+        <div class="brand gate-brand">
+          <div class="brand-icon">+</div>
+          <div class="brand-info">
+            <div class="brand-name">ADMIN SIGNUP</div>
+            <div class="brand-sub">Professional Registration</div>
+          </div>
+        </div>
+        <h1 id="signupTitle">Unda akaunti ya Admin</h1>
+        <p id="signupSubtitle">Chagua mpango, kisha jaza taarifa zako za biashara.</p>
+
+        <div class="signup-plans-section">
+          <h3 id="signupPlansHeading" class="signup-plans-heading">Chagua mpango wako</h3>
+          <div id="signupPlanCards" class="signup-plan-cards" role="radiogroup" aria-label="Subscription plans"></div>
+          <input type="hidden" id="signupSelectedPlan" value="free">
+        </div>
+
+        <form id="signupForm" class="signup-form" novalidate>
+          <div class="form-group">
+            <label for="signupFullName" id="signupFullNameLabel">Jina kamili</label>
+            <input id="signupFullName" class="form-input" type="text" required maxlength="80" autocomplete="name" list="signupNameSuggestions" placeholder="Mfano: Amina Hassan">
+            <datalist id="signupNameSuggestions"></datalist>
+          </div>
+          <div class="form-group">
+            <label for="signupBusinessName" id="signupBusinessNameLabel">Jina la biashara/duka</label>
+            <input id="signupBusinessName" class="form-input" type="text" required maxlength="100" autocomplete="organization" placeholder="Mfano: Kilimani Shop">
+          </div>
+          <div class="signup-form-row">
+            <div class="form-group">
+              <label for="signupEmail" id="signupEmailLabel">Barua pepe</label>
+              <input id="signupEmail" class="form-input" type="email" maxlength="120" autocomplete="email" placeholder="admin@duka.co.tz">
+            </div>
+            <div class="form-group">
+              <label for="signupPhone" id="signupPhoneLabel">Simu</label>
+              <input id="signupPhone" class="form-input" type="tel" maxlength="20" autocomplete="tel" placeholder="+2557XXXXXXXX">
+            </div>
+          </div>
+          <p id="signupContactHint" class="signup-field-hint">Weka barua pepe AU namba ya simu (angalau moja).</p>
+
+          <div class="signup-verify-section">
+            <h3 id="signupVerifyHeading" class="signup-verify-heading">Thibitisha kuwa wewe ni mtu</h3>
+
+            <div class="signup-captcha-box">
+              <label for="signupCaptchaAnswer" id="signupCaptchaLabel">Swali la usalama</label>
+              <div class="signup-captcha-row">
+                <span id="signupCaptchaQuestion" class="signup-captcha-question">?</span>
+                <button type="button" id="signupCaptchaRefresh" class="btn btn-small btn-secondary" title="Swali jipya">&#8635;</button>
+              </div>
+              <input id="signupCaptchaAnswer" class="form-input" type="number" inputmode="numeric" placeholder="Jibu la swali" autocomplete="off">
+            </div>
+
+            <div id="signupSmsBlock" class="signup-sms-block hidden">
+              <label id="signupSmsLabel">Thibitisho la SMS</label>
+              <p id="signupSmsHint" class="signup-field-hint">Tutatuma namba ya uthibitisho kwenye simu yako.</p>
+              <div class="signup-sms-row">
+                <button type="button" id="signupSendOtpBtn" class="btn btn-secondary">Tuma SMS OTP</button>
+                <span id="signupOtpTimer" class="signup-otp-timer"></span>
+              </div>
+              <input id="signupOtpCode" class="form-input" type="text" inputmode="numeric" maxlength="6" placeholder="Weka namba 6 ya OTP">
+              <p id="signupOtpDemo" class="signup-otp-demo hidden" role="status"></p>
+              <p id="signupOtpStatus" class="signup-field-hint"></p>
+            </div>
+          </div>
+
+          <div id="signupPaymentSection" class="signup-payment-section hidden">
+            <h3 id="signupPaymentHeading" class="signup-verify-heading">Malipo ya Kifurushi</h3>
+            <p id="signupPaymentHint" class="signup-field-hint">Chagua njia ya malipo: BANK au MITANDAO.</p>
+            <div class="signup-payment-methods">
+              <label class="signup-payment-option">
+                <input type="radio" name="signupPaymentMethod" value="BANK">
+                <span>BANK</span>
+              </label>
+              <label class="signup-payment-option">
+                <input type="radio" name="signupPaymentMethod" value="MITANDAO">
+                <span>MITANDAO</span>
+              </label>
+            </div>
+            <input id="signupPaymentReference" class="form-input" type="text" placeholder="Namba ya kumbukumbu ya malipo">
+            <p id="signupPaymentStatus" class="signup-field-hint"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="signupPassword" id="signupPasswordLabel">Nywila</label>
+            <input id="signupPassword" class="form-input" type="password" required minlength="8" maxlength="64" autocomplete="new-password" placeholder="Angalau herufi 8">
+          </div>
+          <div class="form-group">
+            <label for="signupPasswordConfirm" id="signupPasswordConfirmLabel">Thibitisha nywila</label>
+            <input id="signupPasswordConfirm" class="form-input" type="password" required minlength="8" maxlength="64" autocomplete="new-password" placeholder="Rudia nywila">
+          </div>
+          <p id="signupFormError" class="gate-login-error hidden" role="alert"></p>
+          <p id="signupFormSuccess" class="signup-success-msg hidden" role="status"></p>
+          <button id="signupSubmitBtn" class="btn btn-primary btn-full" type="submit">
+            <span id="signupSubmitText">Jisajili sasa</span>
+            <span id="signupSubmitLoader" class="signup-loader hidden" aria-hidden="true"></span>
+          </button>
+        </form>
+        <p class="auth-switch">
+          Tayari una akaunti?
+          <button type="button" id="showLoginFromSignupBtn" class="auth-switch-link">Rudi kwenye Login</button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="licenseExpiredGate" class="license-expired-gate hidden" aria-labelledby="licenseExpiredTitle">
+    <div class="license-expired-backdrop"></div>
+    <div class="license-expired-card">
+      <div class="license-expired-icon-wrap" aria-hidden="true">
+        <span class="license-expired-icon">&#128274;</span>
+      </div>
+      <p class="license-expired-badge" id="licenseExpiredBadge">LESENI IMEISHA</p>
+      <h1 id="licenseExpiredTitle">Mfumo Umefungwa</h1>
+      <p id="licenseExpiredMessage" class="license-expired-message">
+        Leseni yako imefika muda. Tafadhali panua leseni ili kuendelea kutumia mfumo.
+      </p>
+      <div class="license-expired-meta">
+        <div class="license-expired-meta-item">
+          <span class="license-expired-meta-label" id="licenseExpiredExpiryLabel">Tarehe ya kumalizika</span>
+          <strong id="licenseExpiredDate">-</strong>
+        </div>
+        <div class="license-expired-meta-item">
+          <span class="license-expired-meta-label" id="licenseExpiredPlanLabel">Mpango</span>
+          <strong id="licenseExpiredPlan">-</strong>
+        </div>
+        <div class="license-expired-meta-item">
+          <span class="license-expired-meta-label" id="licenseExpiredCompanyLabel">Kitambulisho</span>
+          <strong id="licenseExpiredCompany">-</strong>
+        </div>
+      </div>
+      <button id="licenseExpiredBackBtn" class="btn btn-secondary btn-full" type="button">Rudi kwenye Login</button>
+      <p class="license-expired-footer" id="licenseExpiredFooter">
+        Wasiliana na mtoa huduma wa MO SaaS kupata leseni mpya.
+      </p>
+    </div>
+  </section>
+
+  <section id="closedGate" class="login-gate hidden">
+    <div class="login-panel">
+      <div class="brand gate-brand">
+        <div class="brand-icon">LOCK</div>
+        <div class="brand-info">
+          <div class="brand-name">MFUMO UMEFUNGWA</div>
+          <div class="brand-sub">User access closed</div>
+        </div>
+      </div>
+      <h1>Muda wa kazi umeisha</h1>
+      <p>Users hawawezi kutumia mfumo kuanzia saa 4:00 usiku mpaka saa 2:00 asubuhi.</p>
+      <p>Fungua tena kesho saa 2:00 asubuhi.</p>
+      <button id="closedLogoutBtn" class="btn btn-secondary btn-full">Toka</button>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">📊</div>
+        <div class="brand-info">
+          <div class="brand-name">MO SaaS</div>
+          <div class="brand-sub">Business Management</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button data-view="dashboard" class="nav-btn active" title="Dashboard" data-admin-only="true">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button data-view="pos" class="nav-btn" title="Sales Point">
+          <span class="nav-icon">🛒</span>
+          <span class="nav-label">Point of Sale</span>
+        </button>
+        <button data-view="orders" class="nav-btn" title="Orders">
+          <span class="nav-icon">ORD</span>
+          <span class="nav-label">Orders</span>
+        </button>
+        <button data-view="password" class="nav-btn" title="Badilisha Password">
+          <span class="nav-icon">KEY</span>
+          <span class="nav-label">Badilisha Password</span>
+        </button>
+        <button data-view="customers" class="nav-btn" title="Madeni">
+          <span class="nav-icon">DEN</span>
+          <span class="nav-label">Madeni</span>
+        </button>
+        <button data-view="inventory" class="nav-btn" title="Inventory" data-admin-only="true">
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Inventory</span>
+        </button>
+        <button data-view="analytics" class="nav-btn" title="Analytics" data-admin-only="true">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Analytics</span>
+        </button>
+        <button data-view="reports" class="nav-btn" title="Reports" data-admin-only="true">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Reports</span>
+        </button>
+        <button data-view="history" class="nav-btn" title="Sales History" data-admin-only="true">
+          <span class="nav-icon">⏰</span>
+          <span class="nav-label">History</span>
+        </button>
+        <button data-view="settings" class="nav-btn" title="Settings" data-admin-only="true">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+        <button data-view="developer" class="nav-btn" title="Developer Console" data-super-admin-only="true" style="border-top: 1px solid var(--border-color); margin-top: 8px; padding-top: 8px;">
+          <span class="nav-icon">👨‍💻</span>
+          <span class="nav-label">Developer</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-item">
+          <span class="status-label">Date:</span>
+          <span id="today" class="status-value">-</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Employee:</span>
+          <span id="employeeShort" class="status-value">Not Set</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Role:</span>
+          <span id="roleShort" class="status-value">Guest</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Status:</span>
+          <span id="workStatus" class="status-value status-active">🟢 Active</span>
+        </div>
+        <!-- LICENSE STATUS -->
+        <div id="licenseStatusDisplay" class="license-status-badge license-active" style="margin-top: 12px; padding: 8px; border-radius: 6px; font-size: 0.9em; text-align: center;">
+          <span class="status-label">Active License</span>
+        </div>
+        <div id="syncStatusDisplay" class="sync-status-badge" style="margin-top: 8px; padding: 8px; border-radius: 6px; font-size: 0.85em; text-align: center;">
+          <span id="syncStatusText">Sync ready</span>
+        </div>
+        <div class="sidebar-version">MO SaaS v1.0.0</div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- HEADER -->
+      <header class="main-header">
+        <div class="header-left">
+          <div id="headerBusinessName" class="header-business-name">MO SaaS</div>
+          <h1 id="viewTitle">Dashboard</h1>
+          <p id="viewDesc" class="header-desc">Welcome to your sales management system</p>
+        </div>
+        <div class="header-right">
+          <div class="display-controls">
+            <select id="headerLanguageSelect" class="compact-select hidden" title="Language">
+              <option value="sw">Kiswahili</option>
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+            </select>
+            <div class="modern-select" data-select-target="headerLanguageSelect">
+              <button type="button" class="modern-select-trigger">
+                <span class="modern-select-icon">L</span>
+                <span class="modern-select-text">Kiswahili</span>
+                <span class="modern-select-chevron">&#9662;</span>
+              </button>
+              <div class="modern-select-menu hidden">
+                <button type="button" class="modern-select-option" data-value="sw">Kiswahili</button>
+                <button type="button" class="modern-select-option" data-value="en">English</button>
+                <button type="button" class="modern-select-option" data-value="zh">中文</button>
+              </div>
+            </div>
+            <select id="headerThemeSelect" class="compact-select hidden" title="Mode">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+            <div class="modern-select" data-select-target="headerThemeSelect">
+              <button type="button" class="modern-select-trigger">
+                <span class="modern-select-icon">M</span>
+                <span class="modern-select-text">Dark</span>
+                <span class="modern-select-chevron">&#9662;</span>
+              </button>
+              <div class="modern-select-menu hidden">
+                <button type="button" class="modern-select-option" data-value="dark">Dark</button>
+                <button type="button" class="modern-select-option" data-value="light">Light</button>
+              </div>
+            </div>
+          </div>
+          <div class="employee-selector">
+            <select id="employeeInput" class="employee-input" data-i18n-title="employee">
+              <option value="">Chagua mfanyakazi</option>
+              <option value="Boss Admin">1. Developer - Boss Admin</option>
+              <option value="Admin 1">2. Admin 1 - CAANAN PRINTING</option>
+              <option value="Admin 2">3. Admin 2 - MO TEC DIGITAL PRINTING</option>
+              <option value="Admin 3">4. Admin 3 - Mlimani Mini Mart</option>
+              <option value="Admin 4">5. Admin 4 - Zanzibar Traders</option>
+              <option value="Mfanisi Chugastan">Mfanisi Chugastan - User</option>
+              <option value="Mo Tec">Mo Tec - User</option>
+            </select>
+            <input id="employeePin" placeholder="Nywila" class="employee-input employee-pin" type="password" maxlength="20">
+            <button id="setEmployee" class="btn btn-primary" data-i18n="login">Login</button>
+            <button id="logoutEmployee" class="btn btn-secondary hidden" data-i18n="logout">Logout</button>
+          </div>
+          <button id="installAppBtn" class="btn btn-secondary install-app-btn hidden" type="button" data-i18n="installApp">Sakinisha hii APP</button>
+          <button id="notificationBtn" class="btn btn-icon" title="Notifications">🔔</button>
+        </div>
+      </header>
+
+      <!-- CLOSING BANNER (Time Reminder) -->
+      <div id="closingBanner" class="closing-banner hidden">
+        <div class="banner-content">
+          <div class="banner-alert">
+            <span class="alert-icon">⏰</span>
+            <div class="alert-text">
+              <strong>Store Closing Reminder</strong>
+              <p>Closing time: <span id="closingHourDisplay">10:00 PM</span></p>
+              <p>Time remaining: <span id="closingCountdown">15:00</span></p>
+            </div>
+          </div>
+          <div class="countdown-ring">
+            <div class="countdown-value" id="countdownValue">15:00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD VIEW -->
+      <section id="dashboard" class="view-section active">
+        <!-- Daily Summary -->
+        <div class="dashboard-header">
+          <h2>Today's Summary</h2>
+          <div class="date-selector">
+            <span id="currentDate"></span>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiRevenue">0.00</div>
+              <div class="kpi-label">Total Revenue</div>
+            </div>
+            <div class="kpi-trend">↑ 12%</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiSold">0</div>
+              <div class="kpi-label">Items Sold</div>
+            </div>
+            <div class="kpi-trend">↑ 5%</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon">🛍️</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiTransactions">0</div>
+              <div class="kpi-label">Transactions</div>
+            </div>
+            <div class="kpi-trend">↑ 3%</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon">⚠️</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiLowStock">0</div>
+              <div class="kpi-label">Low Stock Items</div>
+            </div>
+            <div class="kpi-trend alert">⚠️</div>
+          </div>
+
+          <div class="kpi-card boss-only">
+            <div class="kpi-icon">+</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiProfit">0.00</div>
+              <div class="kpi-label">Kilichobaki</div>
+            </div>
+            <div class="kpi-trend">Today</div>
+          </div>
+
+          <div class="kpi-card boss-only">
+            <div class="kpi-icon">-</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiCost">0.00</div>
+              <div class="kpi-label">Matumizi ya Siku</div>
+            </div>
+            <div class="kpi-trend alert">Daily</div>
+          </div>
+
+          <div class="kpi-card boss-only">
+            <div class="kpi-icon">#</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiStockRemaining">0</div>
+              <div class="kpi-label">Stock Remaining</div>
+            </div>
+            <div class="kpi-trend">Now</div>
+          </div>
+
+          <div class="kpi-card boss-only">
+            <div class="kpi-icon">=</div>
+            <div class="kpi-content">
+              <div class="kpi-value" id="kpiStockSold">0</div>
+              <div class="kpi-label">Stock Sold</div>
+            </div>
+            <div class="kpi-trend">Today</div>
+          </div>
+        </div>
+        <div id="roleBusinessDashboard" class="role-business-dashboard hidden"></div>
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+          <!-- Sales Chart -->
+          <div class="card sales-overview-card">
+            <div class="card-header">
+              <h3>Sales Overview</h3>
+              <div class="chart-controls">
+                <button class="btn-small active" data-period="daily">Daily</button>
+                <button class="btn-small" data-period="weekly">Weekly</button>
+                <button class="btn-small" data-period="monthly">Monthly</button>
+              </div>
+            </div>
+            <div class="compact-chart">
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Best Sellers -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Best Selling Products</h3>
+            </div>
+            <div id="bestSellers" class="product-list"></div>
+          </div>
+
+          <!-- Available Products -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Available Products</h3>
+              <span class="view-link" onclick="document.querySelector('[data-view=&quot;inventory&quot;]').click()">View All →</span>
+            </div>
+            <div id="dashboardProducts" class="product-list"></div>
+          </div>
+
+          <!-- Low Stock Alert -->
+          <div class="card card-alert">
+            <div class="card-header">
+              <h3>🚨 Low Stock Alert</h3>
+            </div>
+            <div id="lowStockAlert" class="alert-list"></div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Recent Transactions</h3>
+              <span class="view-link" onclick="document.querySelector('[data-view=&quot;history&quot;]').click()">View All →</span>
+            </div>
+            <div id="recentTransactions" class="transaction-list"></div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Quick Actions</h3>
+            </div>
+            <div class="quick-actions">
+              <button class="action-btn" onclick="switchView('pos')">
+                <span class="action-icon">🛒</span>
+                <span>New Sale</span>
+              </button>
+              <button class="action-btn" onclick="switchView('inventory')">
+                <span class="action-icon">📦</span>
+                <span>Check Stock</span>
+              </button>
+              <button class="action-btn" onclick="switchView('reports')">
+                <span class="action-icon">📋</span>
+                <span>Generate Report</span>
+              </button>
+              <button class="action-btn" onclick="openExportMenu()">
+                <span class="action-icon">💾</span>
+                <span>Export Data</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Employee Status -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Work Status</h3>
+            </div>
+            <div class="status-panel">
+              <div class="status-row">
+                <span>Current Employee:</span>
+                <strong id="statusEmployee">Not Set</strong>
+              </div>
+              <div class="status-row">
+                <span>Clock In Time:</span>
+                <strong id="statusClockIn">-</strong>
+              </div>
+              <div class="status-row">
+                <span>Sales Today:</span>
+                <strong id="statusSales">0 items</strong>
+              </div>
+              <div class="status-row" style="flex-direction:column;gap:8px;align-items:flex-start;">
+                <label for="dashboardProductName" style="font-size:0.95rem;color:var(--text-muted);">Jina la Bidhaa:</label>
+                <input id="dashboardProductName" class="form-input" type="text" placeholder="Andika jina la bidhaa..." style="width:100%;" />
+              </div>
+          <button class="btn btn-secondary" style="width:100%;margin-top:10px;" id="toggleWorkStatus">
+                Clock Out
+              </button>
+            </div>
+          </div>
+
+          <div class="card boss-only">
+            <div class="card-header">
+              <h3>Employee Performance Today</h3>
+            </div>
+            <div id="dashboardEmployeePerformance" class="performance-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- POS (POINT OF SALE) VIEW -->
+      <section id="pos" class="view-section">
+        <div class="pos-container">
+          <!-- Products Grid -->
+          <div class="pos-products">
+            <div class="section-header">
+              <h2>Products</h2>
+              <input id="searchProducts" type="text" placeholder="🔍 Search products..." class="search-input">
+            </div>
+            <div class="business-calculator card">
+              <div class="business-calculator-header">
+                <div>
+                  <h3>Smart Price Calculator</h3>
+                  <p>Supports cm, m, kg, l, inch and mixed units like 1m 20cm.</p>
+                </div>
+                <strong id="calculatorLiveTotal">TZS 0</strong>
+              </div>
+              <div class="calculator-grid">
+                <div class="form-group">
+                  <label for="calculatorItemSelect">Product / Service</label>
+                  <select id="calculatorItemSelect" class="form-input hidden"></select>
+                  <div class="modern-select calculator-modern-select" data-select-target="calculatorItemSelect">
+                    <button type="button" class="modern-select-trigger">
+                      <span class="modern-select-icon">P</span>
+                      <span class="modern-select-text">Chagua bidhaa</span>
+                      <span class="modern-select-chevron">&#9662;</span>
+                    </button>
+                    <div id="calculatorItemMenu" class="modern-select-menu hidden"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="calculatorCustomerName">Customer Name</label>
+                  <input id="calculatorCustomerName" class="form-input" type="text" placeholder="Customer name">
+                </div>
+                <div class="form-group">
+                  <label for="calculatorMode">Aina ya Hesabu</label>
+                  <select id="calculatorMode" class="form-input hidden">
+                    <option value="area">Eneo: Width x Height</option>
+                    <option value="length">Mita / Urefu</option>
+                    <option value="quantity">Idadi / Pieces</option>
+                    <option value="custom">Bei Maalum</option>
+                  </select>
+                  <div class="modern-select calculator-modern-select" data-select-target="calculatorMode">
+                    <button type="button" class="modern-select-trigger">
+                      <span class="modern-select-icon">H</span>
+                      <span class="modern-select-text">Eneo: Width x Height</span>
+                      <span class="modern-select-chevron">&#9662;</span>
+                    </button>
+                    <div class="modern-select-menu hidden">
+                      <button type="button" class="modern-select-option" data-value="area">Eneo: Width x Height</button>
+                      <button type="button" class="modern-select-option" data-value="length">Mita / Urefu</button>
+                      <button type="button" class="modern-select-option" data-value="quantity">Idadi / Pieces</button>
+                      <button type="button" class="modern-select-option" data-value="custom">Bei Maalum</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="calculatorWidth">Width</label>
+                  <div class="unit-input-row">
+                    <input id="calculatorWidth" class="form-input" type="text" placeholder="120">
+                    <select id="calculatorWidthUnit" class="form-input hidden">
+                      <option value="cm">cm</option>
+                      <option value="m">m</option>
+                      <option value="inch">inch</option>
+                    </select>
+                    <div class="modern-select unit-modern-select" data-select-target="calculatorWidthUnit">
+                      <button type="button" class="modern-select-trigger">
+                        <span class="modern-select-text">cm</span>
+                        <span class="modern-select-chevron">&#9662;</span>
+                      </button>
+                      <div class="modern-select-menu hidden">
+                        <button type="button" class="modern-select-option" data-value="cm">cm</button>
+                        <button type="button" class="modern-select-option" data-value="m">m</button>
+                        <button type="button" class="modern-select-option" data-value="inch">inch</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="calculatorHeight">Height</label>
+                  <div class="unit-input-row">
+                    <input id="calculatorHeight" class="form-input" type="text" placeholder="80">
+                    <select id="calculatorHeightUnit" class="form-input hidden">
+                      <option value="cm">cm</option>
+                      <option value="m">m</option>
+                      <option value="inch">inch</option>
+                    </select>
+                    <div class="modern-select unit-modern-select" data-select-target="calculatorHeightUnit">
+                      <button type="button" class="modern-select-trigger">
+                        <span class="modern-select-text">cm</span>
+                        <span class="modern-select-chevron">&#9662;</span>
+                      </button>
+                      <div class="modern-select-menu hidden">
+                        <button type="button" class="modern-select-option" data-value="cm">cm</button>
+                        <button type="button" class="modern-select-option" data-value="m">m</button>
+                        <button type="button" class="modern-select-option" data-value="inch">inch</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="calculatorQuantity">Quantity</label>
+                  <input id="calculatorQuantity" class="form-input" type="text" placeholder="1">
+                </div>
+                <div class="form-group">
+                  <label for="calculatorCustomPrice">Custom Price</label>
+                  <input id="calculatorCustomPrice" class="form-input" type="number" placeholder="Bei maalum" min="0" step="1">
+                </div>
+              </div>
+              <label class="design-addon-box" for="calculatorDesignFee">
+                <input id="calculatorDesignFee" type="checkbox">
+                <span class="design-addon-check" aria-hidden="true">+</span>
+                <span>
+                  <strong>Design 10,000/=</strong>
+                  <small>Bonyeza kuongeza</small>
+                </span>
+              </label>
+              <div id="calculatorBreakdown" class="calculator-breakdown">Select an item to calculate price.</div>
+              <button class="btn btn-primary" type="button" onclick="addCalculatedItemToCart()">Add Calculated Item</button>
+            </div>
+            <div id="productsGrid" class="products-grid"></div>
+          </div>
+
+          <!-- Cart Sidebar -->
+          <div class="pos-cart">
+            <div class="cart-header">
+              <h3>Shopping Cart</h3>
+              <span class="cart-count" id="cartCount">0</span>
+            </div>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="cart-footer">
+              <div class="cart-input-section">
+                <label for="saleProductName">Product Name</label>
+                <input id="saleProductName" class="form-input" type="text" placeholder="Andika jina la bidhaa" maxlength="120">
+              </div>
+              <div class="cart-input-grid">
+                <div class="cart-input-section">
+                  <label for="saleProductQty">Quantity</label>
+                  <input id="saleProductQty" class="form-input" type="number" placeholder="1" min="1" step="1" value="1">
+                </div>
+                <div class="cart-input-section">
+                  <label for="saleProductPrice">Price</label>
+                  <input id="saleProductPrice" class="form-input" type="number" placeholder="Bei" min="0" step="1">
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-full" type="button" onclick="addCustomProductToCart()">Ongeza bidhaa kwa jina</button>
+              <hr class="cart-divider" />
+              <div class="cart-input-section">
+                <label for="saleCustomerName">Customer Name</label>
+                <input id="saleCustomerName" class="form-input" type="text" placeholder="Customer name" list="customerNameSuggestions">
+                <datalist id="customerNameSuggestions"></datalist>
+              </div>
+              <div class="cart-input-section">
+                <label for="saleCustomerPhone">Customer Phone</label>
+                <input id="saleCustomerPhone" class="form-input" type="tel" placeholder="+2557XXXXXXXX" maxlength="20">
+              </div>
+              <div class="cart-input-section customer-payment-grid">
+                <div>
+                  <label for="salePaidAmount">Paid Amount</label>
+                  <input id="salePaidAmount" class="form-input" type="number" placeholder="0" min="0" step="1">
+                </div>
+                <div>
+                  <label for="salePaymentStatus">Payment</label>
+                  <select id="salePaymentStatus" class="form-input">
+                    <option value="paid">Paid</option>
+                    <option value="partial">Partial</option>
+                    <option value="credit">Credit</option>
+                  </select>
+                </div>
+              </div>
+              <div class="cart-summary">
+                <div class="summary-row">
+                  <span>Subtotal:</span>
+                  <strong id="cartSubtotal">0.00</strong>
+                </div>
+                <div class="summary-row highlight">
+                  <span>Total:</span>
+                  <strong id="cartTotal">0.00</strong>
+                </div>
+              </div>
+
+              <div class="cart-input-section">
+                <label for="saleComment">Notes (Optional)</label>
+                <textarea id="saleComment" placeholder="Add notes..." maxlength="100" rows="2"></textarea>
+              </div>
+
+              <div class="cart-actions">
+                <button id="clearCartBtn" class="btn btn-secondary btn-full" onclick="clearCart()">Clear Cart</button>
+                <button id="saveOrderBtn" class="btn btn-primary btn-full" onclick="createOrderFromCart()">Save Order</button>
+                <button id="finalizeSaleBtn" class="btn btn-success btn-full" onclick="completeSale()">Save Sale</button>
+                <button id="receiptPreviewBtn" class="btn btn-primary btn-full" onclick="openLastReceipt()" disabled>Receipt / WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="staff-sales-panel">
+          <div class="card">
+            <div class="card-header">
+              <h3>Mauzo Yangu Leo</h3>
+            </div>
+            <div class="staff-summary-grid">
+              <div class="staff-summary-item">
+                <span>Jumla</span>
+                <strong id="staffTodayTotal">0.00</strong>
+              </div>
+              <div class="staff-summary-item">
+                <span>Bidhaa</span>
+                <strong id="staffTodayItems">0</strong>
+              </div>
+              <div class="staff-summary-item">
+                <span>Miamala</span>
+                <strong id="staffTodayTransactions">0</strong>
+              </div>
+              <div class="staff-summary-item">
+                <span data-i18n="dailyExpenses">Matumizi</span>
+                <strong id="staffTodayExpenses">0.00</strong>
+              </div>
+              <div class="staff-summary-item">
+                <span data-i18n="netProfit">Kilichobaki</span>
+                <strong id="staffTodayNet">0.00</strong>
+              </div>
+            </div>
+            <div id="staffSalesList" class="staff-sales-list"></div>
+
+            <div class="staff-expense-panel">
+              <div class="card-header compact">
+                <h3 data-i18n="expenseTitle">Matumizi ya Leo</h3>
+              </div>
+              <div class="staff-expense-form">
+                <input id="staffExpenseName" class="form-input" type="text" data-i18n-placeholder="expenseNamePlaceholder" placeholder="Mfano: Nauli, chakula, delivery" maxlength="80">
+                <input id="staffExpenseAmount" class="form-input" type="number" data-i18n-placeholder="expenseAmountPlaceholder" placeholder="Kiasi" min="0" step="1">
+                <button class="btn btn-secondary btn-full" type="button" onclick="addStaffExpense()" data-i18n="addExpense">Ongeza Matumizi</button>
+              </div>
+              <div id="staffExpenseList" class="staff-expense-list"></div>
+            </div>
+
+            <div id="staffReportCard" class="staff-report-inline" data-user-only="true">
+              <div class="card-header compact">
+                <h3>Ripoti na Maoni kwa Boss</h3>
+              </div>
+              <div class="staff-report-actions">
+                <button class="btn btn-primary btn-full" onclick="sendStaffReportToBoss()">Tuma Ripoti WhatsApp</button>
+                <button class="btn btn-secondary btn-full" onclick="submitStaffDailyReport()">Submit Daily Report</button>
+                <textarea id="staffWhatsappComment" class="comment-textarea" placeholder="Andika maoni kwa boss..." maxlength="250" rows="4"></textarea>
+                <button class="btn btn-secondary btn-full" onclick="sendStaffCommentToBoss()">Tuma Maoni WhatsApp</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CUSTOMERS VIEW -->
+      <section id="customers" class="view-section">
+        <div class="section-header">
+          <h2 id="debtsPageTitle">Madeni ya Wateja</h2>
+          <div class="inventory-controls">
+            <input id="customerSearchInput" class="search-input" type="text" placeholder="Tafuta jina au simu..." oninput="renderCustomersView()">
+            <button class="btn btn-secondary" type="button" onclick="seedDemoCustomerDebts()">Demo Debts</button>
+          </div>
+        </div>
+
+        <div class="debt-help-card">
+          <strong id="debtsHelpTitle">Madeni yanaingia moja kwa moja kutoka POS.</strong>
+          <span id="debtsHelpText">Chagua Credit au Partial kwenye POS, andika alicholipa, mfumo utaweka kilichobaki hapa.</span>
+        </div>
+
+        <div class="customer-summary-grid">
+          <div class="stat-card">
+            <span>Wateja Wenye Deni</span>
+            <strong id="customerTotalCount">0</strong>
+          </div>
+          <div class="stat-card alert">
+            <span>Deni Lililobaki</span>
+            <strong id="customerTotalDebt">0.00</strong>
+          </div>
+          <div class="stat-card">
+            <span>Malipo Yaliyopokelewa</span>
+            <strong id="customerTotalPayments">0.00</strong>
+          </div>
+        </div>
+
+        <div id="customerInsightPanel" class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <h3>Customer Insights</h3>
+          </div>
+          <div class="customer-insights-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:16px;">
+            <div class="insight-item" style="background:var(--surface);padding:14px;border-radius:12px;">
+              <span>Best Customer</span>
+              <strong id="bestCustomerName">-</strong>
+              <small id="bestCustomerTotal">-</small>
+            </div>
+            <div class="insight-item" style="background:var(--surface);padding:14px;border-radius:12px;">
+              <span>Best Product</span>
+              <strong id="bestProductName">-</strong>
+              <small id="bestProductCount">-</small>
+            </div>
+            <div class="insight-item" style="background:var(--surface);padding:14px;border-radius:12px;">
+              <span>Customers</span>
+              <strong id="customerInsightCount">0</strong>
+              <small>Unique customers</small>
+            </div>
+          </div>
+          <div id="customerInsightRows" class="customer-insight-rows" style="padding:0 16px 16px;">
+          </div>
+        </div>
+
+        <div class="customers-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Ongeza / Rekebisha Mteja</h3>
+            </div>
+            <div class="customer-form-grid">
+              <input id="customerFormName" class="form-input" type="text" placeholder="Jina la mteja" maxlength="100">
+              <input id="customerFormPhone" class="form-input" type="tel" placeholder="Namba ya simu" maxlength="20">
+              <input id="customerFormEmail" class="form-input" type="email" placeholder="Email ya mteja" maxlength="120">
+              <textarea id="customerFormNotes" class="form-input" placeholder="Maelezo mafupi..." maxlength="250" rows="3"></textarea>
+              <button class="btn btn-primary btn-full" type="button" onclick="saveCustomerFromForm()">Hifadhi Mteja</button>
+            </div>
+          </div>
+
+          <div class="card card-large">
+            <div class="card-header">
+              <h3 id="debtsListTitle">Orodha ya Madeni</h3>
+            </div>
+            <div id="customersList" class="customers-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ORDERS VIEW -->
+      <section id="orders" class="view-section">
+        <div class="section-header">
+          <h2>Orders</h2>
+          <div class="inventory-controls">
+            <select id="orderStatusFilter" class="form-input">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In progress</option>
+              <option value="ready">Ready</option>
+              <option value="delivered">Delivered</option>
+            </select>
+            <select id="orderPaymentFilter" class="form-input">
+              <option value="">All Payments</option>
+              <option value="unpaid">Unpaid</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        </div>
+        <div class="order-kanban" id="ordersBoard"></div>
+      </section>
+
+      <!-- PASSWORD VIEW -->
+      <section id="password" class="view-section">
+        <div class="section-header">
+          <h2>Badilisha Password</h2>
+        </div>
+        <div class="password-view-layout">
+          <div class="card password-view-card">
+            <div class="card-header">
+              <h3>Badilisha Password</h3>
+            </div>
+            <p id="passwordStatus" class="password-status">Login kuona hali ya password.</p>
+            <div class="staff-report-actions">
+              <input id="staffCurrentPassword" class="form-input" type="password" placeholder="Password ya sasa">
+              <input id="staffNewPassword" class="form-input" type="password" placeholder="Password mpya">
+              <input id="staffConfirmPassword" class="form-input" type="password" placeholder="Rudia password mpya">
+              <button class="btn btn-primary btn-full" onclick="changeOwnPassword()">Hifadhi Password</button>
+            </div>
+            <p class="password-rules">Password iwe na herufi kubwa, ndogo, namba, alama maalum, na urefu wa 8 au zaidi.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVENTORY VIEW -->
+      <section id="inventory" class="view-section">
+        <div class="section-header">
+          <h2>Product Inventory</h2>
+          <div class="inventory-controls">
+            <input id="searchInventory" type="text" placeholder="🔍 Search products..." class="search-input">
+            <button class="btn btn-primary" onclick="openAddProductModal()">+ Add Product</button>
+          </div>
+        </div>
+
+        <div class="inventory-stats">
+          <div class="stat-card">
+            <span class="stat-label">Total Products</span>
+            <span class="stat-value" id="statTotalProducts">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Stock Value</span>
+            <span class="stat-value" id="statStockValue">0.00</span>
+          </div>
+          <div class="stat-card alert">
+            <span class="stat-label">Low Stock Items</span>
+            <span class="stat-value" id="statLowStock">0</span>
+          </div>
+          <div class="stat-card alert">
+            <span class="stat-label">Out of Stock</span>
+            <span class="stat-value" id="statOutOfStock">0</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <table class="inventory-table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>SKU</th>
+                <th>Price</th>
+                <th>Cost Price</th>
+                <th>Profit/Item</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ANALYTICS VIEW -->
+      <section id="analytics" class="view-section">
+        <div class="section-header">
+          <h2>Analytics & Insights</h2>
+        </div>
+
+        <div class="analytics-grid">
+          <!-- Sales Trend Chart -->
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Sales Trend (7 Days)</h3>
+            </div>
+            <canvas id="trendChart" height="100"></canvas>
+          </div>
+
+          <!-- Product Performance -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Product Performance</h3>
+            </div>
+            <canvas id="performanceChart" height="150"></canvas>
+          </div>
+
+          <!-- Revenue Analytics -->
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Revenue Analytics</h3>
+            </div>
+            <div id="revenueMetrics" class="metrics-grid"></div>
+          </div>
+
+          <!-- Category Distribution -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Category Distribution</h3>
+            </div>
+            <canvas id="categoryChart" height="150"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS VIEW -->
+      <section id="reports" class="view-section">
+        <div class="section-header">
+          <h2>Daily Boss Reports</h2>
+        </div>
+
+        <div class="reports-container">
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Daily Summary</h3>
+            </div>
+            <div id="dailySummaryText" class="daily-summary-text">Leo umeuza 0.00</div>
+            <div class="compact-chart">
+              <canvas id="reportsChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Daily Sales Report</h3>
+            </div>
+            <div id="dailyReportStatus" class="daily-report-status"></div>
+            <div id="dailyReport" class="report-content"></div>
+            <div class="report-actions">
+              <button class="btn btn-primary" onclick="generateWhatsAppReport('daily')">
+                📱 Send via WhatsApp
+              </button>
+              <button class="btn btn-secondary" onclick="exportReport('daily', 'pdf')">
+                📄 Export as PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Weekly Sales Report</h3>
+            </div>
+            <div id="weeklyReport" class="report-content"></div>
+            <div class="report-actions">
+              <button class="btn btn-primary" onclick="generateWhatsAppReport('weekly')">
+                📱 Send via WhatsApp
+              </button>
+              <button class="btn btn-secondary" onclick="exportReport('weekly', 'pdf')">
+                📄 Export as PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Monthly Sales Report</h3>
+            </div>
+            <div id="monthlyReport" class="report-content"></div>
+            <div class="report-actions">
+              <button class="btn btn-primary" onclick="generateWhatsAppReport('monthly')">
+                📱 Send via WhatsApp
+              </button>
+              <button class="btn btn-secondary" onclick="exportReport('monthly', 'pdf')">
+                📄 Export as PDF
+              </button>
+            </div>
+          </div>
+
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Employee Performance Report</h3>
+            </div>
+            <div id="employeePerformanceReport" class="performance-list"></div>
+          </div>
+
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Auto / Submitted Staff Reports</h3>
+            </div>
+            <div id="staffReportArchive" class="staff-report-archive"></div>
+          </div>
+
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Employee Comments</h3>
+            </div>
+            <div id="employeeComments" class="comments-section"></div>
+            <div style="margin-top:15px;">
+              <textarea id="bossCommentInput" placeholder="Add comment for boss..." maxlength="200" rows="3" class="comment-textarea"></textarea>
+              <button class="btn btn-primary btn-full" style="margin-top:10px;" onclick="saveBossComment()">
+                Add Comment
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HISTORY VIEW -->
+      <section id="history" class="view-section">
+        <div class="section-header">
+          <h2>Sales History</h2>
+          <div class="history-controls">
+            <input id="dateFilter" type="date" class="filter-input">
+            <button class="btn btn-secondary" onclick="clearHistoryFilter()">Reset</button>
+          </div>
+        </div>
+
+        <div class="card saved-sales-card">
+          <div class="card-header">
+            <h3 data-i18n="savedSales">Saved Sales</h3>
+            <span class="view-link" onclick="exportSalesReport()" data-i18n="exportCsv">Export CSV</span>
+          </div>
+          <div id="savedSalesList" class="saved-sales-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 data-i18n="employeeSummary">Employee Summary</h3>
+          </div>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Sales</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Last Sale</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SETTINGS VIEW -->
+      <section id="settings" class="view-section">
+        <div class="section-header">
+          <h2>Settings</h2>
+        </div>
+
+        <div class="settings-grid">
+          <div class="card">
+            <h3 data-i18n="businessSettings">Business Settings</h3>
+            <div class="form-group">
+              <label data-i18n="businessName">Business Name</label>
+              <input id="businessName" type="text" class="form-input" data-i18n-placeholder="enterBusinessName" placeholder="Enter business name">
+            </div>
+            <div class="form-group">
+              <label data-i18n="bossPhone">Boss Phone (WhatsApp)</label>
+              <input id="bossPhone" type="tel" class="form-input" data-i18n-placeholder="enterPhoneNumber" placeholder="Enter phone number">
+            </div>
+            <div class="form-group">
+              <label data-i18n="closingTime">Closing Time</label>
+              <input id="closingTime" type="time" class="form-input" value="22:00">
+            </div>
+            <div class="form-group">
+              <label data-i18n="dailyBackupTime">Daily Backup Time</label>
+              <input id="backupTime" type="time" class="form-input" value="00:00">
+              <p class="field-hint" data-i18n="backupTimeHint">Saa sita usiku ni 00:00. App ikiwa wazi muda huo itahifadhi backup ya siku.</p>
+            </div>
+            <div class="form-group">
+              <label data-i18n="language">Language</label>
+              <select id="languageSelect" class="form-input hidden">
+                <option value="sw">Kiswahili</option>
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+              </select>
+              <div class="modern-select settings-select" data-select-target="languageSelect">
+                <button type="button" class="modern-select-trigger">
+                  <span class="modern-select-icon">L</span>
+                  <span class="modern-select-text">Kiswahili</span>
+                  <span class="modern-select-chevron">&#9662;</span>
+                </button>
+                <div class="modern-select-menu hidden">
+                  <button type="button" class="modern-select-option" data-value="sw">Kiswahili</button>
+                  <button type="button" class="modern-select-option" data-value="en">English</button>
+                  <button type="button" class="modern-select-option" data-value="zh">中文</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="theme">Mode</label>
+              <select id="themeSelect" class="form-input hidden">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+              </select>
+              <div class="modern-select settings-select" data-select-target="themeSelect">
+                <button type="button" class="modern-select-trigger">
+                  <span class="modern-select-icon">M</span>
+                  <span class="modern-select-text">Dark</span>
+                  <span class="modern-select-chevron">&#9662;</span>
+                </button>
+                <div class="modern-select-menu hidden">
+                  <button type="button" class="modern-select-option" data-value="dark">Dark</button>
+                  <button type="button" class="modern-select-option" data-value="light">Light</button>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()" data-i18n="saveSettings">Save Settings</button>
+          </div>
+
+          <div class="card admin-staff-card" data-admin-only="true">
+            <h3 data-i18n="adminStaffManagement">Wafanyakazi Wangu</h3>
+            <div class="admin-staff-form">
+              <input id="adminStaffName" class="form-input" type="text" data-i18n-placeholder="staffNamePlaceholder" placeholder="Jina la mfanyakazi">
+              <input id="adminStaffPassword" class="form-input" type="password" data-i18n-placeholder="temporaryPasswordPlaceholder" placeholder="Password ya muda">
+              <button class="btn btn-primary" type="button" onclick="adminAddStaffMember()" data-i18n="addStaff">Ongeza</button>
+            </div>
+            <p class="field-hint" data-i18n="adminStaffHint">Admin anaweza kuongeza au kuondoa wafanyakazi wake. Ukiondoa, mfanyakazi hataweza kuingia tena.</p>
+            <div id="adminStaffList" class="admin-staff-list"></div>
+            <div id="adminEmployeeTimelinePanel" class="admin-employee-timeline hidden">
+              <div class="admin-employee-timeline-header">
+                <div>
+                  <span>Mtiririko wa Mfanyakazi</span>
+                  <strong id="adminEmployeeTimelineName">-</strong>
+                </div>
+                <div class="admin-employee-timeline-actions">
+                  <button class="btn btn-small btn-secondary" type="button" onclick="printAdminEmployeeTimeline()">Print / PDF</button>
+                  <button class="btn btn-small btn-secondary" type="button" onclick="exportAdminEmployeeTimelineCsv()">CSV</button>
+                  <button class="btn btn-small btn-secondary" type="button" onclick="closeAdminEmployeeTimeline()">Funga</button>
+                </div>
+              </div>
+              <div class="admin-employee-filters">
+                <button class="btn btn-small active" type="button" data-employee-timeline-period="all" onclick="setAdminEmployeeTimelinePeriod('all')">Zote</button>
+                <button class="btn btn-small" type="button" data-employee-timeline-period="today" onclick="setAdminEmployeeTimelinePeriod('today')">Leo</button>
+                <button class="btn btn-small" type="button" data-employee-timeline-period="weekly" onclick="setAdminEmployeeTimelinePeriod('weekly')">Wiki hii</button>
+                <button class="btn btn-small" type="button" data-employee-timeline-period="monthly" onclick="setAdminEmployeeTimelinePeriod('monthly')">Mwezi huu</button>
+                <input id="adminEmployeeTimelineFrom" class="form-input" type="date" title="Kuanzia" onchange="setAdminEmployeeTimelineCustomDates()">
+                <input id="adminEmployeeTimelineTo" class="form-input" type="date" title="Mpaka" onchange="setAdminEmployeeTimelineCustomDates()">
+              </div>
+              <div class="admin-employee-summary-grid">
+                <div>
+                  <span>Mauzo yote</span>
+                  <strong id="adminEmployeeTimelineSales">0</strong>
+                </div>
+                <div>
+                  <span>Matumizi yote</span>
+                  <strong id="adminEmployeeTimelineExpenses">0</strong>
+                </div>
+                <div>
+                  <span>Kilichobaki</span>
+                  <strong id="adminEmployeeTimelineProfit">0</strong>
+                </div>
+              </div>
+              <div id="adminEmployeeTimelineList" class="admin-employee-timeline-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 data-i18n="dataManagement">Data Management</h3>
+            <div class="form-group">
+              <label data-i18n="exportData">Export Data</label>
+              <button class="btn btn-secondary btn-full" onclick="exportAllData()" data-i18n="exportAllData">Export All Data</button>
+              <button class="btn btn-secondary btn-full" style="margin-top:10px;" onclick="exportSalesReport()" data-i18n="exportSalesReport">Export Sales Report</button>
+            </div>
+            <div class="form-group">
+              <label data-i18n="backupRestore">Backup / Restore</label>
+              <button class="btn btn-secondary btn-full" onclick="chooseBackupFolder()" data-i18n="chooseBackupFolder">Chagua Folder ya Backup</button>
+              <button class="btn btn-secondary btn-full" style="margin-top:10px;" onclick="runAutomaticBackup()" data-i18n="backupNow">Backup Sasa</button>
+              <button class="btn btn-secondary btn-full" style="margin-top:10px;" onclick="openBackupFilePicker()" data-i18n="restoreBackup">Restore Backup</button>
+              <button class="btn btn-primary btn-full" style="margin-top:10px;" onclick="queueFullCloudSync()" data-i18n="syncCloudNow">Sync Cloud Sasa</button>
+              <input id="restoreBackupFile" type="file" class="hidden" accept="application/json,.json">
+              <p class="field-hint"><span data-i18n="backupFolderHint">Folder inaweza kuwa Google Drive au flash drive.</span> <span data-i18n="lastBackupLabel">Backup ya mwisho:</span> <strong id="lastBackupDate">Bado</strong></p>
+            </div>
+            <div class="form-group">
+              <label data-i18n="resetSystem">Reset System</label>
+              <button class="btn btn-secondary btn-full" style="margin-bottom:10px;" onclick="clearSalesAndExpensesOnly()">Futa Mauzo na Matumizi Tu</button>
+              <button class="btn btn-danger btn-full" onclick="resetSystemConfirm()" data-i18n="clearAllData">Clear All Data</button>
+            </div>
+          </div>
+
+          <div class="card settings-license-card">
+            <h3 data-i18n="subscriptionLicense">Subscription License</h3>
+            <div class="form-group">
+              <label data-i18n="licenseStatus">License Status</label>
+              <div class="settings-license-panel">
+                <div class="settings-license-top">
+                  <span id="settingsLicenseStatus" class="settings-license-status">-</span>
+                  <strong id="settingsLicenseDaysLeft" class="settings-license-days">-</strong>
+                </div>
+                <div class="settings-license-grid">
+                  <div>
+                    <span data-i18n="companyId">Company ID</span>
+                    <strong id="settingsLicenseCompanyId">-</strong>
+                  </div>
+                  <div>
+                    <span data-i18n="subscriptionPlan">Plan</span>
+                    <strong id="settingsLicensePlan">-</strong>
+                  </div>
+                  <div>
+                    <span data-i18n="expiryDate">Expires</span>
+                    <strong id="settingsLicenseExpires">-</strong>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-full" onclick="openLicenseModal()" data-i18n="manageLicense">Manage License</button>
+            </div>
+          </div>
+
+          <div class="card about-system-card">
+            <h3 data-i18n="aboutSystem">About System</h3>
+            <div class="about-system-brand">
+              <div class="about-system-mark">MO</div>
+              <div>
+                <strong>MO SaaS</strong>
+                <span data-i18n="aboutTagline">Modern Employee Sales & Business Management System</span>
+              </div>
+            </div>
+            <p data-i18n="aboutText">A professional point-of-sale system designed for modern retail businesses with advanced inventory management, analytics, and reporting features.</p>
+            <div class="about-system-meta">
+              <span data-i18n="versionLabel">Version 1.0</span>
+              <span data-i18n="offlineReadyLabel">Offline ready</span>
+              <span data-i18n="secureAccessLabel">Secure access</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEVELOPER CONSOLE VIEW -->
+      <section id="developer" class="view-section dev-section">
+        <div class="section-header">
+          <h2>Developer Console</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">System monitoring, license management, and configuration controls</p>
+        </div>
+
+        <div class="developer-dashboard">
+          <div class="dev-kpi-grid">
+            <div class="dev-kpi-card">
+              <span>Total Users</span>
+              <strong id="devDashTotalUsers">0</strong>
+            </div>
+            <div class="dev-kpi-card">
+              <span>Active Users</span>
+              <strong id="devDashActiveUsers">0</strong>
+            </div>
+            <div class="dev-kpi-card warning">
+              <span>Expired Subscriptions</span>
+              <strong id="devDashExpiredSubs">0</strong>
+            </div>
+            <div class="dev-kpi-card success">
+              <span>Monthly Revenue</span>
+              <strong id="devDashMonthlyRevenue">0</strong>
+            </div>
+            <div class="dev-kpi-card">
+              <span>New Signups</span>
+              <strong id="devDashNewSignups">0</strong>
+            </div>
+          </div>
+
+          <div class="dev-card dev-card-wide">
+            <div class="dev-card-header">
+              <h3>Admin Businesses Progress</h3>
+            </div>
+            <div id="devBusinessProgressCards" class="business-progress-grid"></div>
+            <div class="responsive-table">
+              <table class="dev-data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Admin</th>
+                    <th>Business</th>
+                    <th>Status</th>
+                    <th>Mauzo Leo</th>
+                    <th>Bidhaa Zimebaki</th>
+                    <th>Revenue</th>
+                    <th>Transactions</th>
+                    <th>Customers</th>
+                    <th>Stock Value</th>
+                    <th>Growth</th>
+                  </tr>
+                </thead>
+                <tbody id="devBusinessProgressTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="dev-panel-grid">
+            <div class="dev-card dev-card-wide">
+              <div class="dev-card-header">
+                <h3 data-i18n="bossBusinessInspectorTitle">Boss Business Inspector</h3>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin:0;" data-i18n="bossBusinessInspectorSubtitle">Chagua Admin kuona biashara yake, users, mauzo, matumizi na reports.</p>
+              </div>
+              <div class="dev-toolbar">
+                <select id="bossInspectAdminSelect" class="form-input" onchange="renderBossBusinessInspector()"></select>
+                <button class="btn btn-small btn-secondary" type="button" onclick="renderBossBusinessInspector()" data-i18n="refresh">Refresh</button>
+                <button class="btn btn-small btn-primary" type="button" onclick="setBossInspectorMode('admin')" data-i18n="viewAdminProgress">View Admin Progress</button>
+                <button class="btn btn-small btn-secondary" type="button" onclick="setBossInspectorMode('staff')" data-i18n="viewStaffProgress">View Wafanyakazi Progress</button>
+                <button class="btn btn-small btn-success" type="button" onclick="bossInspectorSetStatus('ACTIVE')" data-i18n="activateAdmin">Activate</button>
+                <button class="btn btn-small btn-secondary" type="button" onclick="bossInspectorSetStatus('SUSPEND')" data-i18n="suspendAdmin">Suspend</button>
+                <button class="btn btn-small btn-danger" type="button" onclick="bossClearSelectedAdminSalesExpenses()" data-i18n="clearSalesExpenses">Futa Mauzo/Matumizi</button>
+              </div>
+              <div id="bossInspectorSummary" class="boss-inspector-summary"></div>
+              <div id="bossInspectorModeContent" class="boss-inspector-mode-content"></div>
+              <div class="boss-inspector-grid">
+                <div>
+                  <h4 data-i18n="bossInspectorUsersTitle">Users</h4>
+                  <div id="bossInspectorUsers" class="dev-mini-list"></div>
+                </div>
+                <div>
+                  <h4 data-i18n="bossInspectorSalesTitle">Mauzo ya Karibuni</h4>
+                  <div id="bossInspectorSales" class="dev-mini-list"></div>
+                </div>
+                <div>
+                  <h4 data-i18n="bossInspectorOrdersTitle">Oda za Karibuni</h4>
+                  <div id="bossInspectorOrders" class="dev-mini-list"></div>
+                </div>
+                <div>
+                  <h4 data-i18n="bossInspectorReportsTitle">Ripoti</h4>
+                  <div id="bossInspectorReports" class="dev-mini-list"></div>
+                </div>
+              </div>
+            </div>
+            <div class="dev-card dev-card-wide">
+              <div class="dev-card-header">
+                <h3>Admin Registry — Boss Control</h3>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Ongeza au toa Admin kwa wakati halisi. Boss Admin haiwezi kufutwa.</p>
+              </div>
+              <div class="dev-registry-form">
+                <div class="dev-registry-grid">
+                  <div class="form-group">
+                    <label for="bossAddFullName">Jina kamili</label>
+                    <input id="bossAddFullName" class="form-input" type="text" placeholder="Jina la Admin">
+                  </div>
+                  <div class="form-group">
+                    <label for="bossAddBusinessName">Biashara</label>
+                    <input id="bossAddBusinessName" class="form-input" type="text" placeholder="Jina la duka">
+                  </div>
+                  <div class="form-group">
+                    <label for="bossAddEmail">Email</label>
+                    <input id="bossAddEmail" class="form-input" type="email" placeholder="admin@shop.co.tz">
+                  </div>
+                  <div class="form-group">
+                    <label for="bossAddPhone">Simu</label>
+                    <input id="bossAddPhone" class="form-input" type="tel" placeholder="+255...">
+                  </div>
+                  <div class="form-group">
+                    <label for="bossAddPassword">Nywila</label>
+                    <input id="bossAddPassword" class="form-input" type="password" placeholder="Auto ikiwa tupu">
+                  </div>
+                  <div class="form-group">
+                    <label for="bossAddPlan">Mpango</label>
+                    <select id="bossAddPlan" class="form-input">
+                      <option value="free">FREE</option>
+                      <option value="pro">PRO</option>
+                      <option value="pro_plus">Pro+</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="dev-action-row">
+                  <button type="button" class="btn btn-primary" id="bossAddAdminBtn">+ Ongeza Admin</button>
+                </div>
+                <p id="bossRegistryStatus" class="signup-field-hint"></p>
+              </div>
+              <div class="responsive-table" style="margin-top:16px;">
+                <table class="dev-data-table">
+                  <thead>
+                    <tr>
+                      <th>Login</th>
+                      <th>Biashara</th>
+                      <th>Mawasiliano</th>
+                      <th>Hali</th>
+                      <th>Expiry</th>
+                      <th>Muda</th>
+                      <th>Chanzo</th>
+                      <th>Kitendo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bossAdminRegistryBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="dev-card dev-card-wide">
+              <div class="dev-card-header">
+                <h3>User Control Panel</h3>
+              </div>
+              <div class="dev-toolbar">
+                <input id="devUserSearch" class="form-input" type="search" placeholder="Search name or email">
+                <select id="devUserStatusFilter" class="form-input">
+                  <option value="all">All statuses</option>
+                  <option value="active">Active</option>
+                  <option value="pending_payment">Pending payment</option>
+                  <option value="suspended">Suspended</option>
+                  <option value="expired">Expired</option>
+                </select>
+              </div>
+              <div class="responsive-table">
+                <table class="dev-data-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Status</th>
+                      <th>Plan</th>
+                      <th>Expiry</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="devUsersTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="dev-card">
+              <div class="dev-card-header">
+                <h3>Subscription Override</h3>
+              </div>
+              <div class="form-group">
+                <label>User</label>
+                <select id="devOverrideUser" class="form-input"></select>
+              </div>
+              <div class="form-group">
+                <label>Days to add</label>
+                <input id="devOverrideDays" class="form-input" type="number" value="30" min="1">
+              </div>
+              <div class="dev-action-row">
+                <button class="btn btn-small btn-success" onclick="devExtendSelectedSubscription()">Extend</button>
+                <button class="btn btn-small btn-primary" onclick="devActivateSelectedUser()">Activate</button>
+                <button class="btn btn-small btn-danger" onclick="devExpireSelectedUser()">Expire</button>
+              </div>
+            </div>
+
+            <div class="dev-card">
+              <div class="dev-card-header">
+                <h3>Expiry Management</h3>
+              </div>
+              <div id="devExpiringUsers" class="dev-mini-list"></div>
+              <div id="devExpiredUsers" class="dev-mini-list"></div>
+            </div>
+
+            <div class="dev-card dev-card-wide">
+              <div class="dev-card-header">
+                <h3>Payment & Revenue Monitoring</h3>
+              </div>
+              <div class="dev-payment-summary">
+                <div><span>Paid Users</span><strong id="devPaidUsers">0</strong></div>
+                <div><span>Unpaid Users</span><strong id="devUnpaidUsers">0</strong></div>
+                <div><span>Failed Payments</span><strong id="devFailedPayments">0</strong></div>
+              </div>
+              <div id="devPaymentReminders" class="dev-mini-list payment-reminder-list"></div>
+              <div class="responsive-table">
+                <table class="dev-data-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Method</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="devPaymentsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="dev-card">
+              <div class="dev-card-header">
+                <h3>Notifications</h3>
+              </div>
+              <div id="devNotificationsList" class="dev-mini-list"></div>
+            </div>
+
+            <div class="dev-card dev-card-wide">
+              <div class="dev-card-header">
+                <h3>System Logs & Audit Trail</h3>
+                <button class="btn btn-small btn-secondary" type="button" onclick="loadBackendAuditLogs()">Refresh Backend Logs</button>
+              </div>
+              <div id="devSyncStatusPanel" class="dev-payment-summary" style="margin-bottom:12px;">
+                <div><span>Connection</span><strong id="devSyncConnection">-</strong></div>
+                <div><span>Pending Sync</span><strong id="devSyncPending">0</strong></div>
+                <div><span>Last Sync</span><strong id="devSyncLast">-</strong></div>
+              </div>
+              <div id="devAuditTrailList" class="audit-logs-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dev-grid">
+          <!-- SYSTEM STATISTICS -->
+          <div class="dev-card">
+            <div class="dev-card-header">
+              <h3>📊 System Statistics</h3>
+            </div>
+            <div class="dev-stats">
+              <div class="stat-row">
+                <span>Total Products:</span>
+                <strong id="devTotalProducts">0</strong>
+              </div>
+              <div class="stat-row">
+                <span>Total Stock Value:</span>
+                <strong id="devTotalStockValue">0.00</strong>
+              </div>
+              <div class="stat-row">
+                <span>Total Sales:</span>
+                <strong id="devTotalSales">0</strong>
+              </div>
+              <div class="stat-row">
+                <span>Total Revenue:</span>
+                <strong id="devTotalRevenue">0.00</strong>
+              </div>
+              <div class="stat-row">
+                <span>Storage Used:</span>
+                <strong id="devStorageUsed">0 KB</strong>
+              </div>
+              <button class="btn btn-small btn-secondary" onclick="refreshDevStats()" style="width: 100%; margin-top: 10px;">🔄 Refresh</button>
+            </div>
+          </div>
+
+          <!-- LICENSE MANAGEMENT -->
+          <div class="dev-card">
+            <div class="dev-card-header">
+              <h3>📋 License Management</h3>
+            </div>
+            <div class="dev-license-panel">
+              <div class="stat-row">
+                <span>Company ID:</span>
+                <strong id="devCompanyId">-</strong>
+              </div>
+              <div class="stat-row">
+                <span>Plan:</span>
+                <strong id="devLicensePlan">-</strong>
+              </div>
+              <div class="stat-row">
+                <span>Status:</span>
+                <strong id="devLicenseStatus">-</strong>
+              </div>
+              <div class="stat-row">
+                <span>Expiry Date:</span>
+                <strong id="devLicenseExpiry">-</strong>
+              </div>
+              <div class="stat-row" style="color: #008000;">
+                <span>Days Left:</span>
+                <strong id="devDaysLeft">-</strong>
+              </div>
+              <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn btn-small btn-success" onclick="devRenewLicense()">Renew 1 Month</button>
+                <button class="btn btn-small btn-secondary" onclick="devUpgradePlan()">Upgrade</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EMPLOYEE MANAGEMENT -->
+          <div class="dev-card">
+            <div class="dev-card-header">
+              <h3>👥 Employee Management</h3>
+            </div>
+            <div id="devEmployeeList" class="dev-employee-list"></div>
+            <div style="margin-top: 12px;">
+              <input id="devNewEmployeeName" class="form-input" type="text" placeholder="Employee name" style="margin-bottom: 8px;">
+              <input id="devNewEmployeeRole" class="form-input" type="text" placeholder="Role (admin/user)" style="margin-bottom: 8px;">
+              <button class="btn btn-small btn-primary" onclick="devAddEmployee()" style="width: 100%;">Add Employee</button>
+            </div>
+          </div>
+
+          <!-- DATABASE INFO -->
+          <div class="dev-card">
+            <div class="dev-card-header">
+              <h3>🗄️ Database Info</h3>
+            </div>
+            <div class="dev-stats">
+              <div class="stat-row">
+                <span>Storage Backend:</span>
+                <strong>Browser localStorage</strong>
+              </div>
+              <div class="stat-row">
+                <span>Data Format:</span>
+                <strong>JSON</strong>
+              </div>
+              <div class="stat-row">
+                <span>Backup Status:</span>
+                <strong id="devBackupStatus">-</strong>
+              </div>
+              <div class="stat-row">
+                <span>Last Backup:</span>
+                <strong id="devLastBackup">Never</strong>
+              </div>
+              <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn btn-small btn-primary" onclick="devBackupNow()">💾 Backup Now</button>
+                <button class="btn btn-small btn-secondary" onclick="devExportDB()">📥 Export</button>
+                <button class="btn btn-small btn-danger" onclick="devClearDB()">🗑️ Clear</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- API TESTING TOOL -->
+          <div class="dev-card dev-card-large">
+            <div class="dev-card-header">
+              <h3>🔌 API Testing Tool</h3>
+            </div>
+            <div class="api-tester">
+              <div class="form-group">
+                <label>Endpoint URL</label>
+                <input id="devApiUrl" type="text" class="form-input" placeholder="http://localhost:3001/api/license/validate" value="http://localhost:3001/api/license/validate">
+              </div>
+              <div class="form-group">
+                <label>Method</label>
+                <select id="devApiMethod" class="form-input">
+                  <option value="GET">GET</option>
+                  <option value="POST" selected>POST</option>
+                  <option value="PUT">PUT</option>
+                  <option value="DELETE">DELETE</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Request Body (JSON)</label>
+                <textarea id="devApiBody" class="form-input" rows="6" placeholder='{"company_id": "COMP-123456789"}'></textarea>
+              </div>
+              <button class="btn btn-primary" onclick="devTestApi()" style="width: 100%;">Send Request</button>
+              <div id="devApiResponse" class="api-response hidden">
+                <strong>Response:</strong>
+                <pre id="devApiResponseText"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- SYSTEM LOGS -->
+          <div class="dev-card dev-card-large">
+            <div class="dev-card-header">
+              <h3>📝 System Audit Logs</h3>
+            </div>
+            <div id="devAuditLogs" class="audit-logs-container"></div>
+            <button class="btn btn-small btn-secondary" onclick="devClearLogs()" style="width: 100%; margin-top: 12px;">Clear Logs</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div id="passwordModal" class="modal hidden">
+    <div class="modal-content" style="max-width:460px;">
+      <div class="modal-header">
+        <h2>Badilisha Password</h2>
+      </div>
+      <div class="modal-body">
+        <p id="passwordModalMessage" class="password-status">Badilisha password yako ili kuendelea.</p>
+        <div class="form-group">
+          <label>Password ya sasa</label>
+          <input id="forceCurrentPassword" type="password" class="form-input" placeholder="Password ya sasa">
+        </div>
+        <div class="form-group">
+          <label>Password mpya</label>
+          <input id="forceNewPassword" type="password" class="form-input" placeholder="Password mpya">
+        </div>
+        <div class="form-group">
+          <label>Rudia password mpya</label>
+          <input id="forceConfirmPassword" type="password" class="form-input" placeholder="Rudia password mpya">
+        </div>
+        <p class="password-rules">Lazima iwe na herufi kubwa, herufi ndogo, namba, alama maalum, na urefu wa 8 au zaidi.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="changeOwnPassword({ forced: true })">Hifadhi Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LICENSE RENEWAL MODAL -->
+  <div id="licenseRenewalModal" class="modal hidden">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h2>Subscription License Management</h2>
+        <button class="modal-close" onclick="closeLicenseModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+          <p><strong>Company ID:</strong> <span id="licenseCompanyId">-</span></p>
+          <p><strong>Plan:</strong> <span id="licensePlan">-</span></p>
+          <p><strong>Status:</strong> <span id="licenseStatusText">-</span></p>
+          <p><strong>Expiry Date:</strong> <span id="licenseExpiryText">-</span></p>
+          <p><strong>Days Remaining:</strong> <span id="licenseDaysRemaining" style="font-weight: bold; color: #008000;">-</span></p>
+        </div>
+        <div id="renewalMessage" class="password-status"></div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="closeLicenseModal()">Close</button>
+        <button class="btn btn-primary" onclick="renewLicenseOneMonth()">Renew for 1 Month</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Product</h2>
+        <button class="modal-close" onclick="closeProductModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input id="modalProductName" type="text" class="form-input" placeholder="Enter product name">
+        </div>
+        <div class="form-group">
+          <label>SKU *</label>
+          <input id="modalProductSku" type="text" class="form-input" placeholder="Enter SKU">
+        </div>
+        <div class="form-group">
+          <label>Price *</label>
+          <input id="modalProductPrice" type="number" class="form-input" placeholder="Enter price" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Cost Price *</label>
+          <input id="modalProductCostPrice" type="number" class="form-input" placeholder="Enter buying/cost price" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Stock Quantity *</label>
+          <input id="modalProductStock" type="number" class="form-input" placeholder="Enter quantity">
+        </div>
+        <div class="form-group">
+          <label>Stock Type</label>
+          <select id="modalProductStockType" class="form-input">
+            <option value="product">Product Stock</option>
+            <option value="material">Material Stock</option>
+            <option value="service">Service / No Stock</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input id="modalProductCategory" type="text" class="form-input" placeholder="Enter category">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveProduct()">Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Menu Modal -->
+  <div id="exportModal" class="modal hidden">
+    <div class="modal-content" style="max-width:400px;">
+      <div class="modal-header">
+        <h2>Export Data</h2>
+        <button class="modal-close" onclick="closeExportMenu()">✕</button>
+      </div>
+      <div class="modal-body">
+        <button class="export-option" onclick="exportData('csv')">
+          📊 Export as CSV
+        </button>
+        <button class="export-option" onclick="exportData('json')">
+          🔗 Export as JSON
+        </button>
+        <button class="export-option" onclick="exportData('print')">
+          🖨️ Print Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="receiptModal" class="modal hidden">
+    <div class="modal-content" style="max-width:640px;">
+      <div class="modal-header">
+        <h2>Receipt</h2>
+        <button class="modal-close" onclick="closeReceiptModal()">x</button>
+      </div>
+      <div class="modal-body">
+        <div id="receiptContent" class="receipt-content"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeReceiptModal()">Close</button>
+        <button class="btn btn-secondary" onclick="downloadLastReceiptPdf()">Download PDF</button>
+        <button class="btn btn-primary" onclick="shareLastReceiptWhatsApp()">Share WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sessionTimeoutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="sessionTimeoutTitle">
+    <div class="modal-content session-timeout-modal">
+      <div class="modal-header">
+        <h2 id="sessionTimeoutTitle" data-i18n="sessionSecurity">Session Security</h2>
+        <span id="sessionRoleLabel" class="session-role-badge">User</span>
+      </div>
+      <div class="modal-body">
+        <div class="session-timeout-icon" aria-hidden="true">!</div>
+        <p id="sessionTimeoutMessage" class="session-timeout-message">Your session will expire in 30 seconds</p>
+        <div class="session-countdown-wrap">
+          <span id="sessionCountdown" class="session-countdown">30</span>
+          <span data-i18n="secondsLabel">seconds</span>
+        </div>
+        <p class="session-timeout-hint" data-i18n="sessionTimeoutHint">Unsaved cart work is saved automatically before logout.</p>
+      </div>
+      <div class="modal-footer session-timeout-actions">
+        <button class="btn btn-secondary" type="button" onclick="sessionLogoutNow()" data-i18n="logoutNow">Logout Now</button>
+        <button class="btn btn-primary" type="button" onclick="sessionStayLoggedIn()" data-i18n="stayLoggedIn">Stay Logged In</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
