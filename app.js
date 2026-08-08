@@ -197,7 +197,7 @@ const SUPABASE_ENTITY_TABLES = {
   receipt: 'receipts',
   dailyReport: 'daily_reports',
   customer: 'customers',
-  customerDebt: 'customer_debts',
+  customerDebt: 'debts',
   customerPayment: 'customer_payments',
   expense: 'expenses'
 };
