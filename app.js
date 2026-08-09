@@ -1299,18 +1299,18 @@ async function pullSupabaseChanges() {
   const { data: sessionData } = await supabase.auth.getSession();
   if (!sessionData?.session) return true;
 
-  const since = localStorage.getItem(OFFLINE_SYNC_META_KEY) || '1970-01-01T00:00:00.000Z';
-  const companyId = getSyncCompanyId();
+ const since = localStorage.getItem(OFFLINE_SYNC_META_KEY) || '1970-01-01T00:00:00.000Z';
+  const businessId = getSyncBusinessId();
   const pulls = await Promise.all([
-    supabase.from('products').select('*').eq('company_id', companyId).gte('updated_at', since),
-    supabase.from('sales').select('*').eq('company_id', companyId).gte('created_at', since),
-    supabase.from('orders').select('*').eq('company_id', companyId).gte('updated_at', since),
-    supabase.from('receipts').select('*').eq('company_id', companyId),
-    supabase.from('daily_reports').select('*').eq('company_id', companyId).gte('created_at', since),
-    supabase.from('customers').select('*').eq('company_id', companyId).gte('updated_at', since),
-    supabase.from('customer_debts').select('*').eq('company_id', companyId),
-    supabase.from('customer_payments').select('*').eq('company_id', companyId),
-    supabase.from('expenses').select('*').eq('company_id', companyId)
+    supabase.from('products').select('*').eq('business_id', businessId),
+    supabase.from('sales').select('*').eq('business_id', businessId).gte('created_at', since),
+    supabase.from('orders').select('*').eq('business_id', businessId),
+    supabase.from('receipts').select('*').eq('business_id', businessId),
+    supabase.from('daily_reports').select('*').eq('business_id', businessId).gte('created_at', since),
+    supabase.from('customers').select('*').eq('business_id', businessId),
+    supabase.from('debts').select('*').eq('business_id', businessId),
+    supabase.from('customer_payments').select('*').eq('business_id', businessId),
+    supabase.from('expenses').select('*').eq('business_id', businessId)
   ]);
 
   const firstError = pulls.find(result => result.error)?.error;
@@ -4061,7 +4061,15 @@ async function setEmployee(name) {
     }
   }
 
-  // ===== LICENSE VALIDATION ON LOGIN =====
+  const supabaseClient = getSupabaseClient();
+  if (supabaseClient && account.email) {
+    try {
+      const { error: supaAuthError } = await supabaseClient.auth.signInWithPassword({ email: account.email, password: pin });
+      if (supaAuthError) console.warn('Supabase auth login failed:', supaAuthError.message);
+      else console.log('Supabase auth login OK for', account.email);
+    } catch (error) { console.warn('Supabase auth login error:', error.message); }
+  }
+   // ===== LICENSE VALIDATION ON LOGIN =====
   const licenseValidation = validateLicenseForLogin(employeeName);
   if (!licenseValidation.valid) {
     showLicenseExpiredScreen();
@@ -4124,6 +4132,8 @@ function logoutEmployee() {
   stopSessionSecurityTimers();
   sessionCryptoKey = null;
   sessionStorage.removeItem(AUTH_TOKEN_KEY);
+   const supabaseClient = getSupabaseClient();
+  if (supabaseClient) { supabaseClient.auth.signOut().catch(() => {}); }
   if (appState.currentEmployee && appState.employees?.[appState.currentEmployee]) {
     appState.employees[appState.currentEmployee].isOnline = false;
     appState.employees[appState.currentEmployee].lastLogout = new Date().toISOString();
