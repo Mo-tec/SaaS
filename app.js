@@ -1257,7 +1257,7 @@ async function ensureSupabaseCompany() {
     settings: appState.settings || {},
     updated_at: new Date().toISOString()
   };
-  const { error } = await supabase.from('companies').upsert(company, { onConflict: 'id' });
+  const { error } = await supabase.from('businesses').upsert(company, { onConflict: 'id' });
   if (error) throw error;
 }
 
