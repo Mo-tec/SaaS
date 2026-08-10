@@ -1247,17 +1247,14 @@ async function ensureSupabaseCompany() {
   const supabase = getSupabaseClient();
   if (!supabase) return;
   const business = getCurrentAdminBusiness?.() || {};
-  const company = {
-    id: getSyncCompanyId(),
-    business_name: appState.settings?.businessName || business.businessName || 'MO SaaS',
-    admin_name: business.adminName || appState.currentEmployee || null,
-    email: business.email || null,
-    plan: licenseData?.plan || business.plan || 'starter',
-    status: licenseData?.status || business.status || 'active',
-    settings: appState.settings || {},
-    updated_at: new Date().toISOString()
+  const record = {
+    id: getSyncBusinessId(),
+    name: appState.settings?.businessName || business.businessName || 'MO SaaS',
+    boss_phone: appState.settings?.bossPhone || null,
+    closing_time: appState.settings?.closingTime || '22:00',
+    backup_time: appState.settings?.backupTime || '00:00'
   };
-  const { error } = await supabase.from('businesses').upsert(company, { onConflict: 'id' });
+  const { error } = await supabase.from('businesses').upsert(record, { onConflict: 'id' });
   if (error) throw error;
 }
 
