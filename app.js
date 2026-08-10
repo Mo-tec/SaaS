@@ -1038,6 +1038,9 @@ async function idbGet(storeName, key) {
 function getSyncCompanyId() {
   return licenseData.company_id || getCurrentAdminBusiness()?.id || 'local-company';
 }
+function getSyncBusinessId() {
+  return getSyncCompanyId();
+}
 
 function getSupabaseClient() {
   return window.moSupabase || null;
