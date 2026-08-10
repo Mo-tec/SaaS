@@ -1255,7 +1255,7 @@ async function ensureSupabaseCompany() {
     name: appState.settings?.businessName || business.businessName || 'MO SaaS',
     boss_phone: appState.settings?.bossPhone || null,
     closing_time: appState.settings?.closingTime || '22:00',
-    backup_time: appState.settings?.backupTime || '00:00'
+    daily_backup_time: appState.settings?.backupTime || '00:00'
   };
   const { error } = await supabase.from('businesses').upsert(record, { onConflict: 'id' });
   if (error) throw error;
